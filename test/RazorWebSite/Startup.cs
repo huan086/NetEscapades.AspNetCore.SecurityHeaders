@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+#if NETCOREAPP2_1
+using IWebHostEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
+#endif
 
 namespace RazorWebSite
 {
@@ -10,13 +13,18 @@ namespace RazorWebSite
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddMvc()
+#if NETCOREAPP2_1
+                .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+#else
+                .SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+#endif
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-                        var policyCollection = new HeaderPolicyCollection()
+            var policyCollection = new HeaderPolicyCollection()
                 .AddXssProtectionBlock()
                 .AddContentTypeOptionsNoSniff()
                 .AddExpectCTNoEnforceOrReport(0)
@@ -25,7 +33,7 @@ namespace RazorWebSite
                 .AddContentSecurityPolicy(builder =>
                 {
                     builder.AddUpgradeInsecureRequests();
-                    builder.AddDefaultSrc().Self(); 
+                    builder.AddDefaultSrc().Self();
                     builder.AddConnectSrc().From("*");
                     builder.AddFontSrc().From("*");
                     builder.AddFrameAncestors().From("*");

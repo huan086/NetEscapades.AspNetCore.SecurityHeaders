@@ -21,7 +21,7 @@ namespace NetEscapades.AspNetCore.SecurityHeaders.Infrastructure
         }
 
         /// <inheritdoc />
-        public Task<HeaderPolicyCollection> GetPolicyAsync(HttpContext context, string policyName)
+        public Task<HeaderPolicyCollection?> GetPolicyAsync(HttpContext context, string? policyName)
         {
             if (context == null)
             {

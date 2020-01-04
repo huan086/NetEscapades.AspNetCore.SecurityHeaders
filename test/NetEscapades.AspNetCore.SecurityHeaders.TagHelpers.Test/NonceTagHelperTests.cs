@@ -63,7 +63,7 @@ namespace NetEscapades.AspNetCore.SecurityHeaders.TagHelpers.Test
             var id = Guid.NewGuid().ToString();
             var tagName = "script";
             var tagHelperContext = GetTagHelperContext(id, tagName);
-            string nonceValue = null;
+            string? nonceValue = null;
             var nonceTagHelper = new NonceTagHelper()
             {
                 AddNonce = true,
@@ -90,7 +90,7 @@ namespace NetEscapades.AspNetCore.SecurityHeaders.TagHelpers.Test
             Assert.Equal("Something Else", output.Content.GetContent());
         }
 
-        private static ViewContext GetViewContext(string nonce)
+        private static ViewContext GetViewContext(string? nonce)
         {
             var actionContext = new ActionContext(new DefaultHttpContext(), new RouteData(), new ActionDescriptor());
             if (!string.IsNullOrEmpty(nonce))

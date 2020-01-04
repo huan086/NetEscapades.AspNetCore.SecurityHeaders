@@ -15,8 +15,8 @@ namespace NetEscapades.AspNetCore.SecurityHeaders
     public class SecurityHeadersMiddleware
     {
         private readonly RequestDelegate _next;
-        private readonly HeaderPolicyCollection _policy;
-        private readonly string _policyName;
+        private readonly HeaderPolicyCollection? _policy;
+        private readonly string? _policyName;
         private readonly NonceGenerator _nonceGenerator;
         private readonly bool _mustGenerateNonce;
 
@@ -36,7 +36,7 @@ namespace NetEscapades.AspNetCore.SecurityHeaders
         /// <param name="next">The next middleware in the pipeline.</param>
         /// <param name="service">An instance of <see cref="ICustomHeaderService"/>.</param>
         /// /// <param name="policyName">An optional name of the policy to be fetched.</param>
-        public SecurityHeadersMiddleware(RequestDelegate next, ICustomHeaderService service, string policyName)
+        public SecurityHeadersMiddleware(RequestDelegate next, ICustomHeaderService service, string? policyName)
             : this(next, service, new NonceGenerator())
         {
             _policyName = policyName;

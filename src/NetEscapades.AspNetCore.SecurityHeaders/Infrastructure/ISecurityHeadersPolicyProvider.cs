@@ -15,6 +15,6 @@ namespace NetEscapades.AspNetCore.SecurityHeaders.Infrastructure
         /// <param name="context">The <see cref="HttpContext"/> associated with this call.</param>
         /// <param name="policyName">An optional policy name to look for.</param>
         /// <returns>A <see cref="HeaderPolicyCollection"/></returns>
-        Task<HeaderPolicyCollection> GetPolicyAsync(HttpContext context, string policyName);
+        Task<HeaderPolicyCollection?> GetPolicyAsync(HttpContext context, string? policyName);
     }
 }

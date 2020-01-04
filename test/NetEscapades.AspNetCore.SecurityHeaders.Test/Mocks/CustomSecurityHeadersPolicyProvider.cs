@@ -24,7 +24,7 @@ namespace NetEscapades.AspNetCore.SecurityHeaders.Test.Mocks
         }
 
         /// <inheritdoc />
-        public Task<HeaderPolicyCollection> GetPolicyAsync(HttpContext context, string policyName)
+        public Task<HeaderPolicyCollection?> GetPolicyAsync(HttpContext context, string? policyName)
         {
             if (context == null)
             {

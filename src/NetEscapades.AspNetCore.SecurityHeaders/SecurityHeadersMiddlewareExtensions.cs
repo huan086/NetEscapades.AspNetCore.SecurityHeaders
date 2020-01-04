@@ -17,7 +17,7 @@ namespace Microsoft.AspNetCore.Builder
         /// <param name="app">The IApplicationBuilder passed to your Configure method</param>
         /// <param name="policyName">The policy name of a configured policy.</param>
         /// <returns>The original app parameter</returns>
-        public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder app, string policyName)
+        public static IApplicationBuilder UseSecurityHeaders(this IApplicationBuilder app, string? policyName)
         {
             if (app == null)
             {
