@@ -1,5 +1,19 @@
 # Changelog
 
+## [v0.11.0]
+
+Features:
+
+* Add support for `Expect-CT` header. Allows excluding domains that will not have the `Expect-CT` header applied. By default, the `Expect-CT` header will not be applied to localhost. It is also only applied to HTTPS requests  
+* Add support for `worker-src` directive for `Content-Security-Policy` header
+
+## [v0.10.0]
+
+Breaking Changes:
+
+* Drop support for ASP.NET Core 1.x
+* Add support for ASP.NET Core 3.0
+
 ## [v0.9.0]
 
 Features:

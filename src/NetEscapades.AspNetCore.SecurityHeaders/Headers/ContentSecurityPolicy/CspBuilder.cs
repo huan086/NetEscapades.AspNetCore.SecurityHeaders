@@ -90,6 +90,12 @@ namespace Microsoft.AspNetCore.Builder
         public FrameSourceDirectiveBuilder AddFrameSource() => AddDirective(new FrameSourceDirectiveBuilder());
 
         /// <summary>
+        /// The worker-src directive specifies valid sources for Worker, SharedWorker, or ServiceWorker scripts.
+        /// </summary>
+        /// <returns>A configured <see cref="WorkerSourceDirectiveBuilder"/></returns>
+        public WorkerSourceDirectiveBuilder AddWorkerSrc() => AddDirective(new WorkerSourceDirectiveBuilder());
+
+        /// <summary>
         /// The base-uri directive restricts the URLs which can be used in a document's
         /// &lt;base&gt; element. If this value is absent, then any URI is allowed. If this
         /// directive is absent, the user agent will use the value in the &lt;base&gt; element.
@@ -122,10 +128,9 @@ namespace Microsoft.AspNetCore.Builder
         public BlockAllMixedContentDirectiveBuilder AddBlockAllMixedContent() => AddDirective(new BlockAllMixedContentDirectiveBuilder());
 
         /// <summary>
-        /// The upgrade-insecure-requests directive instructs user agents to treat all of a
-        /// site's insecure URLs (those served over HTTP) as though they have been
-        /// replaced with secure URLs (those served over HTTPS). This directive is
-        /// intended for web sites with large numbers of insecure legacy URLs that need to be rewritten.
+        /// The report-uri directive instructs the user agent to report attempts to
+        /// violate the Content Security Policy. These violation reports consist of
+        /// JSON documents sent via an HTTP POST request to the specified URI.
         /// </summary>
         /// <returns>A configured <see cref="ReportUriDirectiveBuilder"/></returns>
         public ReportUriDirectiveBuilder AddReportUri() => AddDirective(new ReportUriDirectiveBuilder());
@@ -160,7 +165,7 @@ namespace Microsoft.AspNetCore.Builder
             // build the constant values ahead of time
             var staticDirectives = _directives.Values
                 .Where(x => !x.HasPerRequestValues)
-                .Select(x => x.CreateBuilder().Invoke(null))
+                .Select(x => x.CreateBuilder().Invoke(null!))
                 .Where(x => !string.IsNullOrEmpty(x));
 
             var constantDirective = string.Join(_directiveSeparator, staticDirectives);
@@ -173,7 +178,7 @@ namespace Microsoft.AspNetCore.Builder
             if (factories.Count == 0)
             {
                 // no dynamic values, just return the string
-                return new CspBuilderResult(constantDirective);
+                return CspBuilderResult.CreateStaticResult(constantDirective);
             }
 
             if (!string.IsNullOrEmpty(constantDirective))
@@ -181,10 +186,8 @@ namespace Microsoft.AspNetCore.Builder
                 factories.Add(ctx => constantDirective);
             }
 
-            return new CspBuilderResult(ctx =>
-            {
-                return string.Join(_directiveSeparator, factories.Select(factory => factory.Invoke(ctx)));
-            });
+            return CspBuilderResult.CreateDynamicResult(ctx =>
+                string.Join(_directiveSeparator, factories.Select(factory => factory.Invoke(ctx))));
         }
     }
 }
